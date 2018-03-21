@@ -2,7 +2,7 @@
     <v-form @submit.prevent="save()" v-model="valid">
         <v-text-field
                 label="Name"
-                v-model="role.name"
+                v-model="item.name"
                 :rules="nameRules"
                 required
         ></v-text-field>
@@ -12,18 +12,26 @@
 </template>
 
 <script>
+    import { mapGetters } from 'vuex'
     export default {
       name: 'role',
       data () {
         return {
           valid: false,
-          role: {
-            id: null,
-            name: ''
-          },
           nameRules: [
               v => !!v || 'Name is required'
           ]
+        }
+      },
+      computed: {
+        ...mapGetters({
+          item: 'item',
+          refresh: 'refresh'
+        })
+      },
+      watch: {
+        refresh () {
+          this.$router.push({path: '/roles'})
         }
       },
       methods: {
@@ -31,20 +39,16 @@
           if(!this.valid) {
             return
           }
-
-          if(this.role.id) {
-            axios.put(`/roles/${this.role.id}`, this.role)
-              .then(() => this.$router.push({path: '/roles'}))
+          if(this.item.id) {
+            this.$store.dispatch('updateItem', this.item)
           } else {
-            axios.post('roles', this.role)
-              .then(() => this.$router.push({path: '/roles'}))
+            this.$store.dispatch('storeItem', this.item)
           }
         }
       },
       created () {
         if(this.$route.params.id) {
-          axios(`/roles/${this.$route.params.id}`)
-            .then(result => this.role = result.data.data)
+          this.$store.dispatch('getItem', this.$route.params.id)
         }
       }
     }

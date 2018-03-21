@@ -6,6 +6,7 @@ import router from './router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import env from  './env'
+import store from './store'
 
 import axios from 'axios'
 axios.defaults.baseURL = env.API_URL
@@ -27,6 +28,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

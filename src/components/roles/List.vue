@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <v-container fluid >
+        {{$store.state}}
         <v-btn to="/role/create" color="success">Dodaj role</v-btn>
         <v-data-table
                 :headers="headers"
@@ -15,10 +16,12 @@
             </template>
         </v-data-table>
 
-    </div>
+    </v-container>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
     export default {
       name: 'roles-list',
       data () {
@@ -28,24 +31,27 @@
             { text: 'Name', value: 'name' },
             { text: 'Edit', sortable: false },
             { text: 'Delete', sortable: false }
-          ],
-          items: []
+          ]
+        }
+      },
+      computed: {
+        ...mapGetters({
+          items: 'items',
+          refresh: 'refresh'
+        })
+      },
+      watch: {
+        refresh () {
+          this.$store.dispatch('items')
         }
       },
       methods: {
-        getItems () {
-          axios('roles')
-            .then(result => this.items = result.data.data)
-        },
         deleteitem (id) {
-          axios.delete(`/roles/${id}`)
-            .then(() => {
-              this.getItems()
-            })
+          this.$store.dispatch('deleteItem', id)
         }
       },
       created () {
-        this.getItems()
+        this.$store.dispatch('items')
       }
     }
 </script>
