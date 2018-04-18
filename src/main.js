@@ -13,7 +13,7 @@ axios.defaults.baseURL = env.API_URL
 window.axios = axios
 
 Vue.use(Vuetify, { theme: {
-  primary: '#ee44aa',
+  primary: '#0082af',
   secondary: '#424242',
   accent: '#82B1FF',
   error: '#FF5252',

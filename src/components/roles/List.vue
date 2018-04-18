@@ -1,6 +1,5 @@
 <template>
     <v-container fluid >
-        {{$store.state}}
         <v-btn to="/role/create" color="success">Dodaj role</v-btn>
         <v-data-table
                 :headers="headers"

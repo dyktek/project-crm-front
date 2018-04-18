@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <v-navigation-drawer
             fixed
             clipped
@@ -51,7 +51,8 @@
       drawer: null,
       items: [
         { icon: 'settings', text: 'Lista ról', path: '/roles' },
-        { icon: 'settings', text: 'Lista użytkowników', path: '/users' }
+        { icon: 'settings', text: 'Lista użytkowników', path: '/users' },
+        { icon: 'settings', text: 'Lista wydarzen', path: '/events' }
       ]
     }),
     props: {
