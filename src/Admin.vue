@@ -28,7 +28,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar color="amber" app absolute clipped-left>
+    <v-toolbar color="primary" app absolute clipped-left>
       <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
       <span class="title ml-3 mr-5">Dyktek&nbsp;<span class="text">CRM</span></span>
       <v-text-field
