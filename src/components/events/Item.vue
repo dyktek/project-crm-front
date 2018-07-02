@@ -17,7 +17,7 @@
             </v-list-tile>
         </v-list>
 
-        <Manage :dialog="dialog"/>
+        <Manage :dialog="dialog" :day="`${calendar.year}-${calendar.month}-${dayFix}`"/>
     </div>
 </template>
 
@@ -34,7 +34,8 @@
       return {
         eventsList: [],
         day: 1,
-        dialog: false
+        dialog: false,
+        dayFix: 0
       }
     },
     methods: {
@@ -55,6 +56,12 @@
       this.day = this.$store.state.dayIterator
       this.eventsList = this.events(this.day)
       this.$store.state.dayIterator++
+
+      if(this.day < 10) {
+        this.dayFix = `0${this.day}`
+      } else {
+        this.dayFix = `${this.day}`
+      }
     }
   }
 </script>

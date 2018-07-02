@@ -1,9 +1,6 @@
 import jwt from 'jsonwebtoken'
 import publicKey from './../../jwt/public'
 
-
-console.log(publicKey)
-
 const state = {
   logged: false
 }
@@ -25,8 +22,6 @@ const actions = {
             commit('LOGGED')
           }
         })
-
-
       })
   }
 }

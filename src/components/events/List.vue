@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :key="listKey">
         <v-toolbar>
             <v-toolbar-title>
                 <v-btn @click="changeMonth(false)">&laquo;</v-btn>
@@ -10,7 +10,7 @@
             </v-toolbar-title>
         </v-toolbar>
         <div class="grid-view">
-            <div class="header-cell" v-for="(day, key) in eventsHeader">
+            <div class="header-cell" v-for="(day, key) in eventsHeader" :key="key">
                 {{day.name}}
             </div>
 
@@ -28,6 +28,7 @@
 
 <script>
   import moment from 'moment'
+  import { mapGetters } from 'vuex'
   import Item from '@/components/events/Item'
   export default {
     name: "List",
@@ -36,6 +37,7 @@
     },
     data () {
       return {
+        listKey: 0,
         calendar: {
           days: 0,
           day: 0,
@@ -60,38 +62,27 @@
           fr: 5,
           sa: 6,
           su: 7
-        },
-        events: [
-          {
-            id: 1,
-            title: 'Jak żyć',
-            description: 'sf sadf asdf asdf asdf',
-            start_date: '2017-11-06 21:02:12',
-            end_date: '2017-11-06 22:02:12',
-            avatar: '/static/img/1.jpg'
-          },
-          {
-            id: 2,
-            title: 'Gdzie jest najlepsze pieczywo',
-            description: 'sf sadf asdf asdf asdf',
-            start_date: '2018-04-05 12:02:12',
-            end_date: '2018-04-05 13:02:12',
-            avatar: '/static/img/1.jpg'
-          },
-          {
-            id: 3,
-            title: 'Gdzie nocą tupta jeż',
-            description: 'sf sadf asdf asdf asdf',
-            start_date: '2018-04-05 14:02:12',
-            end_date: '2018-04-05 16:02:12',
-            avatar: '/static/img/1.jpg'
-          }
-        ]
+        }
       }
     },
     computed: {
       currentDate () {
         return `${this.calendar.year}-${this.calendar.month}-${this.calendar.day}`
+      },
+      ...mapGetters({
+        events: 'events',
+        refresh_2: 'refresh_2'
+      })
+    },
+    watch: {
+      events () {
+        //this.$store.dispatch('items')
+        // this.$nextTick(() => {
+        //   console.log(1234)
+        //   this.$forceUpdate()
+        // });
+        this.$store.state.dayIterator = 1
+        this.listKey = ++this.listKey
       }
     },
     methods: {
@@ -103,6 +94,7 @@
 
         return this.events.filter(event => {
           let startDate = moment(event.start_date)
+
           if(date == startDate.format('YYYY-MM-DD')) {
             return event
           }
@@ -146,8 +138,13 @@
       this.calendar.year = date.year()
       this.calendar.month = date.format('MM')
       this.calendar.day = date.format('DD')
-
+      let month = moment(this.currentDate).add(1, 'months')
       this.calendar.firstDayOfMonth = this.getNo(date.startOf('month').format('dd'))
+
+      this.$store.dispatch('events', {
+        start_date: `${this.calendar.year}-${this.calendar.month}-${this.calendar.day}`,
+        end_date: `${this.calendar.year}-${this.calendar.month}-${month.daysInMonth()}`
+      })
     }
   }
 </script>
